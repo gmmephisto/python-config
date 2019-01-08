@@ -19,7 +19,7 @@
 
 Name:    python-config
 Version: 0.1.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: A simple module for reading Python configuration files
 
 Group:   Development/Libraries
@@ -121,6 +121,9 @@ make PYTHON=%{__python3} INSTALL_FLAGS="-O1 --root '%buildroot'" install
 
 
 %changelog
+* Tue Jan 08 2019 Dmitry Konishchev <konishchev@gmail.com> - 0.1.2-2
+- Build python3 package for epel7
+
 * Mon Dec 12 2016 Dmitry Konishchev <konishchev@gmail.com> - 0.1.2-1
 - New version.
 
