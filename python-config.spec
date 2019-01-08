@@ -1,4 +1,4 @@
-%if 0%{?fedora} > 12 || 0%{?rhel} > 7
+%if 0%{?fedora} > 12 || 0%{?rhel} >= 7
 %bcond_without python3
 %else
 %bcond_with python3
@@ -11,6 +11,7 @@
 %if 0%{with python3}
 %{!?__python3: %global __python3 /usr/bin/python3}
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%{!?python3_pkgversion: %global python3_pkgversion 3}
 %endif  # with python3
 
 # Run tests
@@ -32,13 +33,14 @@ BuildArch:     noarch
 BuildRequires: make
 BuildRequires: python2-devel python-setuptools
 %if 0%{with python3}
-BuildRequires: python3-devel python3-setuptools
+BuildRequires: python%{python3_pkgversion}-devel
+BuildRequires: python%{python3_pkgversion}-setuptools
 %endif  # with python3
 
 %if 0%{with check}
 BuildRequires: pytest >= 2.2.4
 %if 0%{with python3}
-BuildRequires: python3-pytest >= 2.2.4
+BuildRequires: python%{python3_pkgversion}-pytest >= 2.2.4
 %endif  # with python3
 %endif  # with tests
 
@@ -53,12 +55,12 @@ https://github.com/KonishchevDmitry/object-validator project.
 
 
 %if 0%{with python3}
-%package -n python3-config
+%package -n python%{python3_pkgversion}-config
 Summary: A simple module for reading Python configuration files
 
 Requires: python3
 
-%description -n python3-config
+%description -n python%{python3_pkgversion}-config
 Python configuration files themselves are actual Python files. The module
 reads only values in uppercase from them, checks that they contain only basic
 Python types and returns a dictionary which corresponds to the configuration
@@ -105,7 +107,7 @@ make PYTHON=%{__python3} INSTALL_FLAGS="-O1 --root '%buildroot'" install
 %doc ChangeLog INSTALL README
 
 %if 0%{with python3}
-%files -n python3-config
+%files -n python%{python3_pkgversion}-config
 %defattr(-,root,root,-)
 %{python3_sitelib}/python_config.py
 %{python3_sitelib}/__pycache__/python_config.*.py*
